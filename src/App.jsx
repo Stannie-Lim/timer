@@ -57,9 +57,9 @@ function App() {
 
   return (
     <div style={{ backgroundSize: 'cover', backgroundImage: `url("${hene}")`, height: '100vh', width: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: "column" }}>
-      <img src={pippi} width={100} height={100} />
+      <img src={pippi} height={150} style={{ overflow: 'visible', zIndex: 1, marginTop: -150 }} />
 
-      <Paper variant="outlined" style={{ width: 300, height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+      <Paper variant="outlined" style={{ boxShadow: '0 0 20px #ccc', width: 300, height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
         <Grid container direction="column" alignItems="center" justifyContent="center" spacing={2}>
           <Grid container item justifyContent="center" spacing={2}>
             <Grid item>
