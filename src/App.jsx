@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { Button, Typography } from '@mui/material'
+import { Button, Typography, IconButton } from '@mui/material'
 
 import ding from './assets/ding.mp3';
 
 import useSound from 'use-sound';
+
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
 
 function secondsToHms(seconds) {
   const m = Math.floor((seconds % 3600) / 60);
@@ -39,7 +42,7 @@ function App() {
 
   const reset = () => {
     pause();
-    setTime(DEFAULT_TIME);
+    setTime(120);
   };
 
   useEffect(() => {
@@ -55,6 +58,14 @@ function App() {
       <Button disabled={stopTimer == null} onClick={pause}>Pause timer</Button>
       <Button onClick={reset}>Reset timer</Button>
       <Typography>{secondsToHms(time)}</Typography>
+      <div>
+        <IconButton disabled={stopTimer != null} onClick={() => setTime(time - 1)}>
+          <RemoveIcon />
+        </IconButton>
+        <IconButton disabled={stopTimer != null} onClick={() => setTime(time + 1)}>
+          <AddIcon />
+        </IconButton>
+      </div>
     </div>
   )
 }
