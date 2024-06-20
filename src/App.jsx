@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { Button, Typography, IconButton } from '@mui/material'
+import { Button, Typography, IconButton, Paper, Grid } from '@mui/material'
 
 import ding from './assets/ding.mp3';
 
@@ -10,6 +10,9 @@ import useSound from 'use-sound';
 
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
+
+import hene from './assets/hene.png';
+import pippi from './assets/pippi.png';
 
 function secondsToHms(seconds) {
   const m = Math.floor((seconds % 3600) / 60);
@@ -53,20 +56,37 @@ function App() {
   }, [time]);
 
   return (
-    <div>
-      <Button disabled={stopTimer != null} onClick={start}>Start timer</Button>
-      <Button disabled={stopTimer == null} onClick={pause}>Pause timer</Button>
-      <Button onClick={reset}>Reset timer</Button>
-      <Typography>{secondsToHms(time)}</Typography>
-      <div>
-        <IconButton disabled={stopTimer != null} onClick={() => setTime(time - 1)}>
-          <RemoveIcon />
-        </IconButton>
-        <IconButton disabled={stopTimer != null} onClick={() => setTime(time + 1)}>
-          <AddIcon />
-        </IconButton>
-      </div>
-    </div>
+    <div style={{ backgroundSize: 'cover', backgroundImage: `url("${hene}")`, height: '100vh', width: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: "column" }}>
+      <img src={pippi} width={100} height={100} />
+
+      <Paper variant="outlined" style={{ width: 300, height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+        <Grid container direction="column" alignItems="center" justifyContent="center" spacing={2}>
+          <Grid container item justifyContent="center" spacing={2}>
+            <Grid item>
+              <Button variant="outlined" sx={{ borderColor: 'black', color: 'black' }} disabled={stopTimer != null} onClick={start}>Start</Button>
+            </Grid>
+            <Grid item>
+              <Button variant="outlined" sx={{ borderColor: 'black', color: 'black' }} disabled={stopTimer == null} onClick={pause}>Pause</Button>
+            </Grid>
+          </Grid>
+
+          <Grid item>
+            <Button onClick={reset} disabled={time === 120 && !stopTimer} variant="outlined" sx={{ borderColor: 'black', color: 'black' }} >Reset timer</Button>
+          </Grid>
+          <Grid item>
+            <Typography variant="h2">{secondsToHms(time)}</Typography>
+          </Grid>
+          <div>
+            <IconButton disabled={stopTimer != null || time == 0} onClick={() => setTime(time - 1)}>
+              <RemoveIcon />
+            </IconButton>
+            <IconButton disabled={stopTimer != null} onClick={() => setTime(time + 1)}>
+              <AddIcon />
+            </IconButton>
+          </div>
+        </Grid>
+      </Paper >
+    </div >
   )
 }
 
