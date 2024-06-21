@@ -20,7 +20,6 @@ import VolumeUp from '@mui/icons-material/VolumeUp';
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 
 import hene from './assets/hene.png';
-import pippi from './assets/pippi.png';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -119,7 +118,7 @@ function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div style={{ backgroundSize: 'cover', backgroundImage: `url("${hene}")`, height: '100vh', width: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: "column" }}>
-        <img src={pippi} height={150} style={{ overflow: 'visible', zIndex: 1, marginTop: -150 }} />
+        <img src="https://i.mapleranks.com/u/IBKGPJKPNIJOCNMDENBMPBIFHHDDKOKELENJCCNEBBHADNBIFMKNHAENIBHLFHDDCOMNDBDNNEEMNNAGJLFLKJLDFALEMAEBBPCGJMGIALHGPDFBALMKGELKFFKKDGKOENCFEMFDPGNBMBHKEAMNAAKIGFJMJGJGDHCPCNJMFIEPAPCCKIHNAJPEEDEGPGGFEKLIEAADHBDBLMIEBGCIJGBAOLCMIOBDBHOPFBOMNELCHMDPHHIDHMJEMFDLMFPH.png" height={150} style={{ overflow: 'visible', zIndex: 1, marginTop: -150 }} />
 
         <Paper variant="outlined" style={{ boxShadow: '0 0 20px #ccc', width: 300, height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
           <Grid container direction="column" alignItems="center" justifyContent="center" spacing={2}>
