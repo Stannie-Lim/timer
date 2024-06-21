@@ -35,7 +35,7 @@ function secondsToHms(seconds) {
 }
 
 function App() {
-  const [time, setTime] = useState(1)
+  const [time, setTime] = useState(120)
   const [stopTimer, setStopTimer] = useState();
   const [isSettingTime, setIsSettingTime] = useState(false);
   const [sound, setSound] = useState(100);
