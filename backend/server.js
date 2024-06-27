@@ -12,17 +12,7 @@ app.use(express.json());
 
 app.get('/', async (req, res, next) => {
   try {
-    const count = (await prisma.counter.findFirst());
-
-    if (count == null) {
-      await prisma.counter.create({
-        data: {
-          count: 0
-        },
-      });
-    }
-
-    res.send({ count: (await prisma.counter.findFirst()).count });
+    res.send({ count: (await prisma.counter.findFirst())?.count || 0 });
   } catch (error) {
     next(error);
   }
@@ -32,16 +22,20 @@ app.get('/counter_history', async (req, res, next) => {
   try {
     const counter = await prisma.counter.findFirst();
 
-    res.send(
-      await prisma.changelog.findMany({
-        where: {
-          counterId: counter.id,
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-      })
-    );
+    if (counter) {
+      res.send(
+        await prisma.changelog.findMany({
+          where: {
+            counterId: counter.id,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        })
+      );
+    }
+
+    res.send([]);
   } catch (error) {
     next(error);
   }
@@ -51,21 +45,20 @@ app.patch('/', async (req, res, next) => {
   const { type, reason } = req.body;
 
   try {
-    let currentCount = (await prisma.counter.findFirst())?.count;
+    const currentCount = (await prisma.counter.findFirst())?.count;
 
+    let newCounter = await prisma.counter.findFirst();
     if (currentCount == null) {
-      await prisma.counter.create({
+      newCounter = await prisma.counter.create({
         data: {
           count: 0
         },
       });
     }
 
-    currentCount = (await prisma.counter.findFirst())?.count;
-
     const counter = await prisma.counter.update({
       where: {
-        id: 1,
+        id: newCounter.id,
       },
       data: {
         count: type === 'increment' ? currentCount + 1 : currentCount - 1,
