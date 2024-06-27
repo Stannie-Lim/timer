@@ -12,14 +12,43 @@ app.use(express.json());
 
 app.get('/', async (req, res, next) => {
   try {
+    const count = (await prisma.counter.findFirst());
+
+    if (count == null) {
+      await prisma.counter.create({
+        data: {
+          count: 0
+        },
+      });
+    }
+
     res.send({ count: (await prisma.counter.findFirst()).count });
   } catch (error) {
     next(error);
   }
 });
 
+app.get('/counter_history', async (req, res, next) => {
+  try {
+    const counter = await prisma.counter.findFirst();
+
+    res.send(
+      await prisma.changelog.findMany({
+        where: {
+          counterId: counter.id,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      })
+    );
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.patch('/', async (req, res, next) => {
-  const { type } = req.body;
+  const { type, reason } = req.body;
 
   try {
     let currentCount = (await prisma.counter.findFirst())?.count;
@@ -40,6 +69,14 @@ app.patch('/', async (req, res, next) => {
       },
       data: {
         count: type === 'increment' ? currentCount + 1 : currentCount - 1,
+      },
+    });
+
+    await prisma.changelog.create({
+      data: {
+        reason,
+        count: counter.count,
+        counterId: counter.id,
       },
     });
 

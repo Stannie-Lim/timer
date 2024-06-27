@@ -1,51 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { Background } from './Background';
 import { Grid, Typography, Backdrop, CircularProgress, Alert, Button, Skeleton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
-import axios from 'axios';
-
-export const Counter = () => {
-  const [counter, setCounter] = useState('');
-  const [initialDataLoading, setInitialDataLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}`);
-        setCounter(data.count);
-        setError(false);
-      } catch (error) {
-        setError(true);
-      }
-
-      setInitialDataLoading(false);
-    };
-
-    getData();
-  }, []);
-
-  const onChange = async (type) => {
-    try {
-      setLoading(true);
-      const { data } = await axios.patch(`${import.meta.env.VITE_APP_BACKEND_URL}`, {
-        type,
-      });
-
-      setCounter(data.count);
-      setError(false);
-    } catch (error) {
-      setError(true);
-    }
-    setLoading(false);
-  };
-
+export const Counter = ({
+  counter,
+  initialDataLoading,
+  loading,
+  error,
+  onChange,
+}) => {
   return (
-    <Background>
+    <>
       {error && (
         <Alert variant="filled" severity="error" sx={{ position: 'fixed', top: 0, width: '100%' }}>
           There was an error with something. Tell stannie and he will fix
@@ -66,17 +33,17 @@ export const Counter = () => {
         </Grid>
         <Grid container item justifyContent="center" spacing={1}>
           <Grid item>
-            <Button disabled={initialDataLoading} size="large" variant='outlined' onClick={() => onChange('decrement')}>
+            <Button disabled={initialDataLoading || counter <= 0} size="large" variant='outlined' onClick={() => onChange('decrement', 'MANUALLY')}>
               <RemoveIcon />
             </Button>
           </Grid>
           <Grid item>
-            <Button disabled={initialDataLoading} size="large" variant='outlined' onClick={() => onChange('increment')}>
+            <Button disabled={initialDataLoading} size="large" variant='outlined' onClick={() => onChange('increment', 'MANUALLY')}>
               <AddIcon />
             </Button>
           </Grid>
         </Grid>
       </Grid>
-    </Background>
+    </>
   );
 };

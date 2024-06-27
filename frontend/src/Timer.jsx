@@ -26,7 +26,7 @@ function secondsToHms(seconds) {
   return [m, s].map(v => v.toString().padStart(2, '0')).join(':');
 }
 
-export const Timer = () => {
+export const Timer = ({ onTimeEnd }) => {
   const [time, setTime] = useState(120)
   const [stopTimer, setStopTimer] = useState();
   const [isSettingTime, setIsSettingTime] = useState(false);
@@ -64,10 +64,15 @@ export const Timer = () => {
   };
 
   useEffect(() => {
-    if (time <= 0 && !isSettingTime) {
-      clearInterval(stopTimer);
-      play();
-    }
+    const timeEnd = async () => {
+      if (time <= 0 && !isSettingTime) {
+        clearInterval(stopTimer);
+        play();
+        await onTimeEnd();
+      }
+    };
+
+    timeEnd();
   }, [time]);
 
   const onTimeClick = (event) => {
@@ -108,7 +113,7 @@ export const Timer = () => {
     <TimePicker onChange={onTimeChange} value={calculateTime(time)} views={['minutes', 'seconds']} format="mm:ss" />
   );
   return (
-    <Background>
+    <>
       <Grid container direction="column" alignItems="center" justifyContent="center" spacing={2}>
         <Grid container item justifyContent="center" spacing={2}>
           <Grid item>
@@ -143,6 +148,6 @@ export const Timer = () => {
           </Box>
         </Grid>
       </Grid>
-    </Background>
+    </>
   );
 };

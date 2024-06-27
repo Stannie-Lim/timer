@@ -14,6 +14,22 @@ datasource db {
 }
 
 model counter {
-  id    Int @id @default(autoincrement())
-  count Int @default(0)
+  id        Int         @id @default(autoincrement())
+  count     Int         @default(0)
+  changelog changelog[]
+}
+
+model changelog {
+  id        Int      @id @default(autoincrement())
+  reason    Reason   @default(MANUALLY)
+  count     Int
+  counterId Int
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+
+  counter counter @relation(fields: [counterId], references: [id])
+}
+
+enum Reason {
+  MANUALLY
+  AUTOMATICALLY
 }
