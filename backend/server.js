@@ -33,9 +33,9 @@ app.get('/counter_history', async (req, res, next) => {
           },
         })
       );
+    } else {
+      res.send([]);
     }
-
-    res.send([]);
   } catch (error) {
     next(error);
   }

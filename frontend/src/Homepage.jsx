@@ -7,27 +7,10 @@ import { Background } from './Background';
 
 import axios from 'axios';
 
-export const Homepage = ({ error, setError }) => {
-  const [counter, setCounter] = useState('');
-  const [initialDataLoading, setInitialDataLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}`);
-        setCounter(data.count);
-        setError(false);
-      } catch (error) {
-        setError(true);
-      }
-
-      setInitialDataLoading(false);
-    };
-
-    getData();
-  }, []);
-
+export const Homepage = ({ error, setError, counter,
+  initialDataLoading,
+  loading,
+  setLoading, setCounter }) => {
   const onChange = async (type, reason) => {
     try {
       setLoading(true);

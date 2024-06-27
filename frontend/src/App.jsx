@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 
 import { Homepage } from './Homepage';
 import { History } from './History';
@@ -8,6 +8,7 @@ import { Alert, BottomNavigation, BottomNavigationAction } from '@mui/material';
 
 import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
+import axios from 'axios';
 
 const BottomNavigationLink = forwardRef((props, ref) => {
   return <Link to={props.to} ref={ref} {...props} />
@@ -19,6 +20,45 @@ function App() {
   const [error, setError] = useState(false);
 
   const [value, setValue] = useState(location.pathname === '/' ? 'Homepage' : 'History');
+
+  const [counter, setCounter] = useState('');
+  const [initialDataLoading, setInitialDataLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const { data } = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}`);
+        setCounter(data.count);
+        setError(false);
+      } catch (error) {
+        setError(true);
+      }
+
+      setInitialDataLoading(false);
+    };
+
+    getData();
+  }, []);
+
+  const [historyLoading, setHistoryLoading] = useState(true);
+  const [history, setHistory] = useState([]);
+
+  useEffect(() => {
+    const getHistory = async () => {
+      try {
+        const { data } = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}/counter_history`);
+
+        setHistory(data);
+      } catch (error) {
+        setError(true);
+      }
+
+      setHistoryLoading(false);
+    };
+
+    getHistory();
+  }, [counter]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -32,8 +72,17 @@ function App() {
         </Alert>
       )}
       <Routes>
-        <Route path='/' element={<Homepage error={error} setError={setError} />} />
-        <Route path='/history' element={<History error={error} setError={setError} />} />
+        <Route path='/' element={<Homepage
+          counter={counter}
+          setCounter={setCounter}
+          initialDataLoading={initialDataLoading}
+          loading={loading}
+          setLoading={setLoading}
+          error={error} setError={setError} />} />
+        <Route path='/history' element={<History error={error} setError={setError}
+          historyLoading={historyLoading}
+          history={history}
+        />} />
       </Routes>
 
       <BottomNavigation
