@@ -13,11 +13,6 @@ export const Counter = ({
 }) => {
   return (
     <>
-      {error && (
-        <Alert variant="filled" severity="error" sx={{ position: 'fixed', top: 0, width: '100%' }}>
-          There was an error with something. Tell stannie and he will fix
-        </Alert>
-      )}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}

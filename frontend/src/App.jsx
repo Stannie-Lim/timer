@@ -4,7 +4,7 @@ import { Homepage } from './Homepage';
 import { History } from './History';
 
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { Alert, BottomNavigation, BottomNavigationAction } from '@mui/material';
 
 import HomeIcon from '@mui/icons-material/Home';
 import HistoryIcon from '@mui/icons-material/History';
@@ -26,6 +26,11 @@ function App() {
 
   return (
     <div>
+      {error && (
+        <Alert variant="filled" severity="error" sx={{ position: 'fixed', top: 0, width: '100%' }}>
+          There was an error with something. Tell stannie and he will fix
+        </Alert>
+      )}
       <Routes>
         <Route path='/' element={<Homepage error={error} setError={setError} />} />
         <Route path='/history' element={<History error={error} setError={setError} />} />
